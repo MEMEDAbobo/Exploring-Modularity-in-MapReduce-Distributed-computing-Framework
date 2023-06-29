@@ -1,12 +1,12 @@
 import random
 
-words = ['hello', 'world', 'test', 'sample', 'data', 'this', 'is', 'a', 'new', 'task']
-tasks = []
-
-for i in range(1000):
-    task_id = "task" + str(i+1)
-    task_data = ' '.join(random.choices(words, k=random.randint(0,10)))
-    task = task_id + " " + task_data
-    tasks.append(task)
-
-print(tasks)
+def data_generator(num,data_len):
+    words = ['time', 'year', 'people', 'way', 'day', 'man', 'thing', 'woman', 'life', 'child', 'world', 'school', 'state', 'family', 'student', 'group', 'country', 'problem', 'hand', 'part', 'place', 'case', 'group', 'problem', 'fact', 'eye', 'friend', 'month', 'truth', 'marketing', 'university', 'writing', 'article', 'department', 'difference', 'goal', 'news', 'audience', 'fishing', 'growth', 'income', 'marriage', 'user', 'combination', 'failure', 'meaning', 'medicine', 'philosophy', 'teacher', 'communication', 'night', 'chemistry', 'disease', 'disk', 'energy', 'nation', 'road', 'role', 'soup', 'camera', 'freedom', 'paper', 'environment', 'child', 'instance', 'month', 'truth', 'development', 'difference', 'goal', 'news', 'audience', 'fishing', 'growth', 'income', 'marriage', 'user', 'winner', 'parent', 'heart', 'moment', 'concept', 'patient', 'pioneer', 'tail', 'tradition', 'airline', 'leadership', 'writer', 'anxiety', 'atmosphere', 'awareness', 'bath', 'bread', 'candidate', 'climate', 'cheese', 'clerk', 'chocolate', 'debate', 'twist', 'meaning', 'driver', 'flight', 'freedom', 'childhood', 'context', 'customer', 'death', 'discussion', 'housing', 'inflation', 'insurance', 'mood', 'woman', 'advice', 'blood', 'effort', 'expression', 'importance', 'opinion', 'payment', 'reality', 'responsibility', 'situation', 'skill', 'statement', 'wealth', 'application', 'city', 'county', 'depth', 'estate', 'foundation', 'grandmother', 'heart', 'perspective', 'photo', 'recipe', 'studio', 'topic', 'collection', 'depression', 'imagination', 'passion', 'percentage', 'resource', 'setting', 'ad', 'agency', 'college', 'connection', 'criticism', 'debt', 'description', 'memory', 'patience', 'secretary', 'solution', 'administration', 'aspect', 'attitude', 'director', 'personality', 'psychology', 'recommendation', 'response', 'selection', 'storage', 'version', 'alcohol', 'argument', 'complaint', 'contract', 'emphasis', 'highway', 'loss', 'membership', 'possession', 'preparation', 'steak', 'union', 'agreement', 'cancer', 'currency', 'employment', 'engineering', 'entry', 'interaction', 'limit', 'mixture', 'preference', 'region', 'republic', 'seat', 'tradition', 'virus', 'actor', 'classroom', 'delivery', 'device', 'difficulty', 'drama', 'election', 'engine', 'football', 'guidance', 'hotel', 'owner', 'priority', 'protection', 'suggestion', 'tension', 'variation', 'anxiety', 'atmosphere', 'awareness', 'bread', 'climate', 'comparison', 'confusion', 'construction', 'elevator']
+    tasks = []
+    random.seed(1)
+    for i in range(num):
+        task_id = "task" + str(i+1)
+        task_data = ' '.join(random.choices(words, k=random.randint(0,data_len)))
+        task = task_id + " " + task_data
+        tasks.append(task)
+    return tasks

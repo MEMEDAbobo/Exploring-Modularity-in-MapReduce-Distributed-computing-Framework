@@ -4,7 +4,7 @@ class TaskScheduler:
         self.node_manager = node_manager
         self.last_assigned_node_index = 0
 
-    def assign_task_bf1(self, tasks):
+    def assign_task_bf(self, tasks):
         for task in tasks:
             word_count = len(task.split())
             nodes = self.node_manager.get_nodes()
@@ -22,24 +22,11 @@ class TaskScheduler:
             if best_fit_node is not None:
                 with best_fit_node.lock:
                     best_fit_node.tasks.append(task)
-                    print("Assigned task:", task, "to node", best_fit_node.node_id)
+                    # print("Assigned task:", task, "to node", best_fit_node.node_id)
             else:
                 print("This task", task, "cannot be assigned (oversize or not enough nodes)")
 
-    def assign_task_bf2(self, tasks):
-        for task in tasks:
-            word_count = len(task.split())
-            nodes = sorted(self.node_manager.get_nodes(), key=lambda node: self.node_manager.preset_time - sum(
-                len(task.split()) for task in node.tasks))
-            for node in nodes:
-                cur_time = sum(len(task.split()) for task in node.tasks)
-                with node.lock:
-                    if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
-                        node.tasks.append(task)
-                        print("Assigned task:", task, "to node", node.node_id)
-                        break
-            else:
-                print("this task", task, "can not assign(oversize or not enough nodes)")
+
     def assign_task_wf(self, tasks):
         for task in tasks:
             word_count = len(task.split())
@@ -50,7 +37,7 @@ class TaskScheduler:
                 with node.lock:
                     if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
                         node.tasks.append(task)
-                        print("Assigned task:", task, "to node", node.node_id)
+                        # print("Assigned task:", task, "to node", node.node_id)
                         break
             else:
                 print("this task", task, "can not assign(oversize or not enough nodes)")
@@ -64,7 +51,7 @@ class TaskScheduler:
                 with node.lock:
                     if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
                         node.tasks.append(task)
-                        print("Assigned task:", task, "to node", node.node_id)
+                        # print("Assigned task:", task, "to node", node.node_id)
                         # assigned = True
                         break
             else:
@@ -75,13 +62,13 @@ class TaskScheduler:
         node_count = len(nodes)
         for task in tasks:
             word_count = len(task.split())
-            for _ in range(node_count):  # Make sure we don't loop indefinitely if no node can take the task.
+            for _ in range(node_count):
                 node = nodes[self.last_assigned_node_index]
                 cur_time = sum(len(task.split()) for task in node.tasks)
                 with node.lock:
                     if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
                         node.tasks.append(task)
-                        print("Assigned task:", task, "to node", node.node_id)
+                        # print("Assigned task:", task, "to node", node.node_id)
                         self.last_assigned_node_index = (self.last_assigned_node_index + 1) % node_count
                         break
                 self.last_assigned_node_index = (self.last_assigned_node_index + 1) % node_count
