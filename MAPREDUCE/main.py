@@ -13,7 +13,7 @@ data = ["task1 happy join happy", "task2 like hi hi hi hi hi", "task3 like dede"
         "task23 mean streak two","task24 miles wide the villagers lived in terror of","task25 the",
         "task26 beast and would not dare to approach the castle"]
 
-Max_tasks = 2
+Max_tasks = 3
 Preset_time = 12
 Num_nodes = 26
 
