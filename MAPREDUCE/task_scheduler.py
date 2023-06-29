@@ -4,7 +4,7 @@ class TaskScheduler:
         self.node_manager = node_manager
         self.last_assigned_node_index = 0
 
-    def assign_task_bf(self, tasks):
+    def assign_task_bf1(self, tasks):
         for task in tasks:
             word_count = len(task.split())
             nodes = self.node_manager.get_nodes()
@@ -25,6 +25,35 @@ class TaskScheduler:
                     print("Assigned task:", task, "to node", best_fit_node.node_id)
             else:
                 print("This task", task, "cannot be assigned (oversize or not enough nodes)")
+
+    def assign_task_bf2(self, tasks):
+        for task in tasks:
+            word_count = len(task.split())
+            nodes = sorted(self.node_manager.get_nodes(), key=lambda node: self.node_manager.preset_time - sum(
+                len(task.split()) for task in node.tasks))
+            for node in nodes:
+                cur_time = sum(len(task.split()) for task in node.tasks)
+                with node.lock:
+                    if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
+                        node.tasks.append(task)
+                        print("Assigned task:", task, "to node", node.node_id)
+                        break
+            else:
+                print("this task", task, "can not assign(oversize or not enough nodes)")
+    def assign_task_wf(self, tasks):
+        for task in tasks:
+            word_count = len(task.split())
+            nodes = sorted(self.node_manager.get_nodes(), key=lambda node: self.node_manager.preset_time - sum(
+                len(task.split()) for task in node.tasks), reverse=True)
+            for node in nodes:
+                cur_time = sum(len(task.split()) for task in node.tasks)
+                with node.lock:
+                    if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
+                        node.tasks.append(task)
+                        print("Assigned task:", task, "to node", node.node_id)
+                        break
+            else:
+                print("this task", task, "can not assign(oversize or not enough nodes)")
 
     def assign_task_ff(self, tasks):
         for task in tasks:

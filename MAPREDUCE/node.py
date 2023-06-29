@@ -21,7 +21,7 @@ class Node(threading.Thread):
             if task:
                 results, word_count = MapReduce([task])
                 # print("Node", self.node_id, "results:", results)
-                time.sleep(word_count)
+                # time.sleep(word_count)
                 # print("Node", self.node_id, "finished processing task:", task)
             else:
                 time.sleep(1)
