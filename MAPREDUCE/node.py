@@ -3,13 +3,14 @@ import time
 from MAPREDUCE.map_reduce import MapReduce
 
 class Node(threading.Thread):
-    def __init__(self, node_id, max_tasks):
+    def __init__(self, node_id, max_tasks,data_store):
         threading.Thread.__init__(self)
         self.node_id = node_id
         self.tasks = []
         self.should_stop = False
         self.max_tasks = max_tasks
         self.lock = threading.Lock()
+        self.data_store = data_store
 
     def run(self):
         while not self.should_stop:
@@ -21,6 +22,7 @@ class Node(threading.Thread):
             if task:
                 results, word_count = MapReduce([task])
                 # print("Node", self.node_id, "results:", results)
+                self.data_store.save(self.node_id, (task, results))
                 # time.sleep(word_count)
                 # print("Node", self.node_id, "finished processing task:", task)
             else:

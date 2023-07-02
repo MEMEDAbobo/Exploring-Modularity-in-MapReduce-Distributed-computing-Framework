@@ -2,8 +2,8 @@ from MAPREDUCE.node import Node
 import time
 
 class NodeManager:
-    def __init__(self, max_tasks, preset_time, num_nodes):
-        self.nodes = [Node(i, max_tasks) for i in range(num_nodes)]
+    def __init__(self, max_tasks, preset_time, num_nodes,data_store):
+        self.nodes = [Node(i, max_tasks, data_store) for i in range(num_nodes)]
         self.max_tasks = max_tasks
         self.preset_time = preset_time
     def start_node(self):
