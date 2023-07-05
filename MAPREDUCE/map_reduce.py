@@ -22,5 +22,5 @@ def MapReduce(data):
 
     for key, values in key_values.items():
         FinalResults.append(ReduceFunction(key, values))
-    total_words = sum([len(sentence.split()) for sentence in data])
-    return FinalResults,total_words
+
+    return FinalResults
