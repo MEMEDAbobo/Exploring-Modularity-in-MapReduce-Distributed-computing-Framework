@@ -4,7 +4,7 @@ import time
 from data_generator import data_generator
 from data_store import MemoryDataStore, FileDataStore
 from plot import show_stat_and_plot
-data = data_generator(10000,10)
+data = data_generator(300,10)
 # data = ["a a a a a a aa", "a a a a a aaaaa","aa"]
 
 data_store = MemoryDataStore()
@@ -12,14 +12,14 @@ data_store = MemoryDataStore()
 
 Max_tasks = 4
 max_time = 16
-Num_nodes = 6000
+Num_nodes = 300
 cpu_cores = 15
 
 node_manager = NodeManager(Max_tasks, max_time, cpu_cores, Num_nodes, data_store)
 scheduler = TaskScheduler(node_manager)
 
 start_time = time.time()
-scheduler.assign_task_wf(data)
+scheduler.assign_task_ff(data)
 end_time = time.time()
 print("Execution time: ", end_time - start_time, "seconds")
 
