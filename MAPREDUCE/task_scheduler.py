@@ -93,17 +93,20 @@ class TaskScheduler:
     def assign_task_wf(self, tasks):
         for task in tasks:
             word_count = len(task.split())
-            nodes = sorted(self.node_manager.get_nodes(), key=lambda node: self.node_manager.preset_time - sum(
-                len(task.split()) for task in node.tasks), reverse=True)
+            required_cores = len(task.split()[-1])
+            nodes = sorted(self.node_manager.get_nodes(), key=lambda node: (self.node_manager.preset_time - sum(
+                len(task.split()) for task in node.tasks)) * node.cpu_cores, reverse=True)
             for node in nodes:
                 cur_time = sum(len(task.split()) for task in node.tasks)
+                remaining_core_space = node.cpu_cores - required_cores
                 with node.lock:
-                    if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
+                    if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time and required_cores <= node.cpu_cores and remaining_core_space >= 0:
                         node.tasks.append(task)
-                        # print("Assigned task:", task, "to node", node.node_id)
+                        # update the cpu_cores of the node
+                        node.cpu_cores -= required_cores
                         break
             else:
-                print("this task", task, "can not assign(oversize or not enough nodes)")
+                print("this task", task, "can not assign(oversize or not enough cores or nodes)")
 
     def assign_task_ff(self, tasks):
         for task in tasks:
@@ -128,13 +131,16 @@ class TaskScheduler:
         nodes = self.node_manager.get_nodes()
         node_count = len(nodes)
         for task in tasks:
+            words = task.split()
+            required_cores = len(words[-1])
             word_count = len(task.split())
             for _ in range(node_count):
                 node = nodes[self.last_assigned_node_index]
                 cur_time = sum(len(task.split()) for task in node.tasks)
                 with node.lock:
-                    if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time:
+                    if len(node.tasks) < node.max_tasks and cur_time + word_count <= self.node_manager.preset_time and node.cpu_cores >= required_cores:
                         node.tasks.append(task)
+                        node.cpu_cores -= required_cores
                         # print("Assigned task:", task, "to node", node.node_id)
                         self.last_assigned_node_index = (self.last_assigned_node_index + 1) % node_count
                         break

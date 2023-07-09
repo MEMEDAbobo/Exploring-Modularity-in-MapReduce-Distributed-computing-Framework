@@ -2,26 +2,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 import statistics
 
-def show_stat_and_plot(Node_manager, window_size=50):
+def show_stat_and_plot(Node_manager,task_number):
     assigned_nodes = [node for node in Node_manager.get_nodes() if node.tasks]
     node_ids = [node.node_id for node in assigned_nodes]
     task_counts = [len(node.tasks) for node in assigned_nodes]
     cpu_cores_used = [(Node_manager.cpu_cores - node.cpu_cores) for node in assigned_nodes]
     task_times = [sum(len(task.split()) for task in node.tasks) for node in assigned_nodes]
-
+    size = task_number//100
     stdev_task_count = statistics.stdev(task_counts)
     stdev_task_core = statistics.stdev(cpu_cores_used)
     stdev_task_time = statistics.stdev(task_times)
+
     print(f"{len(assigned_nodes)} nodes have been assigned tasks.")
     print("stdev task count per node (only nodes with tasks):", stdev_task_count)
     print("stdev core count per node (only nodes with tasks):", stdev_task_core)
     print("stdev time count per node (only nodes with tasks):", stdev_task_time)
-    # Aggregate data
-    node_ids = node_ids[::window_size]
-    task_counts = [statistics.mean(task_counts[i:i + window_size]) for i in range(0, len(task_counts), window_size)]
-    cpu_cores_used = [statistics.mean(cpu_cores_used[i:i + window_size]) for i in
-                      range(0, len(cpu_cores_used), window_size)]
-    task_times = [statistics.mean(task_times[i:i + window_size]) for i in range(0, len(task_times), window_size)]
+
+    node_ids = node_ids[::size]
+    task_counts = [statistics.mean(task_counts[i:i + size]) for i in range(0, len(task_counts), size)]
+    cpu_cores_used = [statistics.mean(cpu_cores_used[i:i + size]) for i in range(0, len(cpu_cores_used), size)]
+    task_times = [statistics.mean(task_times[i:i + size]) for i in range(0, len(task_times), size)]
 
     r1 = np.arange(len(node_ids))
 
@@ -43,7 +43,7 @@ def show_stat_and_plot(Node_manager, window_size=50):
 
     plt.legend()
     plt.show()
-
+    return stdev_task_count,stdev_task_core,stdev_task_time,len(assigned_nodes)
 
 
 
