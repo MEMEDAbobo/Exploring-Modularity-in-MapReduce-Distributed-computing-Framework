@@ -25,16 +25,16 @@ def show_stat_and_plot(Node_manager,task_number):
 
     r1 = np.arange(len(node_ids))
 
-    plt.plot(r1, task_counts, color='b', marker='o', label='Task Counts')
-    plt.plot(r1, cpu_cores_used, color='r', marker='o', label='CPU Cores Used')
-    plt.plot(r1, task_times, color='g', marker='o', label='Task Times')
+    plt.plot(r1, task_counts, color='b', marker='o', label='task counts')
+    plt.plot(r1, cpu_cores_used, color='r', marker='o', label='processing unit Used')
+    plt.plot(r1, task_times, color='g', marker='o', label='words counts')
 
     max_tasks_line = [Node_manager.max_tasks] * len(node_ids)
     preset_time_line = [Node_manager.preset_time] * len(node_ids)
     cpu_cores_line = [Node_manager.cpu_cores] * len(node_ids)
 
-    plt.plot(r1, preset_time_line, color='g', linestyle='dashed', label='Preset Time')
-    plt.plot(r1, cpu_cores_line, color='r', linestyle='dashed', label='CPU Cores')
+    plt.plot(r1, preset_time_line, color='g', linestyle='dashed', label='Max words')
+    plt.plot(r1, cpu_cores_line, color='r', linestyle='dashed', label='Through put')
     plt.plot(r1, max_tasks_line, color='b', linestyle='dashed', label='Max Tasks')
 
     plt.xlabel('Nodes (Aggregated)', fontweight='bold', fontsize=15)

@@ -4,35 +4,37 @@ import time
 from data_generator import data_generator
 from data_store import MemoryDataStore
 from plot import show_stat_and_plot
-Max_tasks = 4
-cpu_cores = 20
+max_tasks = 4
+throughput = 20
 max_time = 22
-Num_nodes = 500
-task_number = 1000
+num_nodes = 5000
+task_number = 10000
 # task core range = 1-9
 # task time range = 2 - 10
-task_time_range = 10
+task_time_range = 14
 task_count_list = []
 task_core_list = []
 task_time_list = []
 node_used_list = []
 Execution_time_list = []
-for i in range(100):
+# unsign_num_list = []
+for i in range(10):
     data = data_generator(task_number, task_time_range,i)
     data_store = MemoryDataStore()
-    node_manager = NodeManager(Max_tasks, max_time, cpu_cores, Num_nodes, data_store)
+    node_manager = NodeManager(max_tasks, max_time, throughput, num_nodes, data_store)
     scheduler = TaskScheduler(node_manager)
-    start_time = time.time()
-    scheduler.assign_task_nf(data)
-    end_time = time.time()
-    Execution_time = end_time - start_time
-    stdev_task_count, stdev_task_core, stdev_task_time,node_used = show_stat_and_plot(node_manager, task_number)
+    starttime = time.time()
+    scheduler.assign_task_ff(data)
+    endtime = time.time()
+    Execution_time = endtime - starttime
+    stdev_taskcount, stdev_taskcore, stdev_tasktime,node_used = show_stat_and_plot(node_manager, task_number)
     node_manager.start_node()
     node_manager.close()
-    task_count_list.append(stdev_task_count)
-    task_core_list.append(stdev_task_core)
-    task_time_list.append(stdev_task_time)
+    task_count_list.append(stdev_taskcount)
+    task_core_list.append(stdev_taskcore)
+    task_time_list.append(stdev_tasktime)
     node_used_list.append(node_used)
     Execution_time_list.append(Execution_time)
-print("Max_tasks =",Max_tasks,"cpu_cores =",cpu_cores,"max_time =",max_time,"Num_nodes =",Num_nodes,"task_number =",task_number,"task_time_range =",task_time_range)
-print("\n", "task owned stdev", task_count_list, "\n", "cores used stdev",task_core_list, "\n", "time used stdev", task_time_list, "\n", "node used", node_used_list, "\n", "execution time ", Execution_time_list)
+    # unsign_num_list.append(unsign)
+print("Max tasks =",max_tasks,"throughput =",throughput,"max time =",max_time,"nodes number =",num_nodes,"tasks number =",task_number,"tasks time range =",task_time_range)
+print("\n", "stdev of nodes' tasks number", task_count_list, "\n", "stdev of nodes' processing unit used",task_core_list, "\n", "stdev of nodes' words number", task_time_list, "\n", "node used", node_used_list, "\n", "Fit execution time ", Execution_time_list)
