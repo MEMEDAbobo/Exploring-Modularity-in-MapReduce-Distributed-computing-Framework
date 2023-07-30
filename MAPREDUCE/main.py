@@ -6,8 +6,8 @@ from data_store import MemoryDataStore, FileDataStore
 from plot import show_stat_and_plot
 Max_tasks = 4
 max_time = 22
-Num_nodes = 5000
-cpu_cores = 14
+Num_nodes = 3000
+cpu_cores = 20
 task_number = 10000
 # max task core = 9
 # task_time_range = 2 - 10
